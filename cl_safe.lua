@@ -2,9 +2,48 @@ _onSpot = false
 isMinigame = false
 _SafeCrackingStates = "Setup"
 
-RegisterCommand("createSafe",function()
-	local ss = createSafe({math.random(0,99)})
-	print(ss)
+-- RegisterCommand("createSafe",function()
+-- 	local ss = createSafe({math.random(0,99)})
+-- 	print(ss)
+-- end)
+
+local CancelPrompt, OpenPrompt, RotatePrompt
+local Prompts = GetRandomIntInRange(0, 0xffffff)
+
+Citizen.CreateThread(function()
+    -- local str = 'Cancel'
+    -- CancelPrompt = PromptRegisterBegin()
+    -- PromptSetControlAction(CancelPrompt, 0x156F7119)	-- ESC
+    -- str = CreateVarString(10, 'LITERAL_STRING', str)
+    -- PromptSetText(CancelPrompt, str)
+    -- PromptSetEnabled(CancelPrompt, true)
+    -- PromptSetVisible(CancelPrompt, true)
+    -- PromptSetStandardMode(CancelPrompt, 1000)
+    -- PromptSetGroup(CancelPrompt, Prompts)
+    -- PromptRegisterEnd(CancelPrompt)
+
+	local str = 'Open'
+    OpenPrompt = PromptRegisterBegin()
+    PromptSetControlAction(OpenPrompt, 0x2CD5343E)	-- W
+    str = CreateVarString(10, 'LITERAL_STRING', str)
+    PromptSetText(OpenPrompt, str)
+    PromptSetEnabled(OpenPrompt, true)
+    PromptSetVisible(OpenPrompt, true)
+    PromptSetStandardMode(OpenPrompt, 1000)
+    PromptSetGroup(OpenPrompt, Prompts)
+    PromptRegisterEnd(OpenPrompt)
+
+	local str = 'Rotate'
+    RotatePrompt = PromptRegisterBegin()
+    PromptSetControlAction(RotatePrompt, 0x7065027D)	-- A
+	PromptSetControlAction(RotatePrompt, 0xB4E465B4)	-- D
+    str = CreateVarString(10, 'LITERAL_STRING', str)
+    PromptSetText(RotatePrompt, str)
+    PromptSetEnabled(RotatePrompt, true)
+    PromptSetVisible(RotatePrompt, true)
+    PromptSetStandardMode(RotatePrompt, 1000)
+    PromptSetGroup(RotatePrompt, Prompts)
+    PromptRegisterEnd(RotatePrompt)
 end)
 
 function createSafe(combination)
@@ -19,13 +58,16 @@ function createSafe(combination)
 			DrawSprites(true)
 			res = RunMiniGame()
 
+			local label  = CreateVarString(10, 'LITERAL_STRING', '')
+			PromptSetActiveGroupThisFrame(Prompts, label)
+
 			if res == true then
 				return res
 			elseif res == false then
 				return res
 			end
 
-			Citizen.Wait(0)
+			Wait(0)
 		end
 	end
 end
@@ -83,12 +125,12 @@ function RunMiniGame()
 			return false
 		end
 
-		if IsControlJustPressed(0,0xD27782E3) then
-			EndMiniGame(false)
-			return false
-		end
+		-- if IsControlJustPressed(0,0x156F7119) then
+		-- 	EndMiniGame(false)
+		-- 	return false
+		-- end
 
-		if IsControlJustPressed(0,0x8FD015D8) then
+		if IsControlJustPressed(0,0x2CD5343E) then
 			if _onSpot then
 				ReleaseCurrentPin()
 				_onSpot = false
@@ -136,7 +178,7 @@ end
 function RotateSafeDial(rotationDirection)
 	if rotationDirection == "Anticlockwise" or rotationDirection == "Clockwise" then
 		local multiplier
-		local rotationPerNumber = 3.6
+		local rotationPerNumber = 1.0
 		if rotationDirection == "Anticlockwise" then
 			multiplier = 1
 		elseif rotationDirection == "Clockwise" then
