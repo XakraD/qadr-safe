@@ -10,6 +10,7 @@ function sescal(dict,ses)
         local ped = PlayerPedId()
         local ped_coords = GetEntityCoords(ped)
         -- local x,y,z =  table.unpack(ped_coords + GetEntityForwardVector(ped)*2.0)
-        Citizen.InvokeNative(0xCCE219C922737BFA,soundset_name, ped_coords, soundset_ref, true, 0, true, 0)
+        -- Citizen.InvokeNative(0xCCE219C922737BFA,soundset_name, ped_coords, soundset_ref, true, 0, true, 0)
+        Citizen.InvokeNative(0x6FB1DA3CA9DA7D90, soundset_name, PlayerPedId(), soundset_ref, true, 0, 0)  -- PLAY_SOUND_FROM_ENTITY
     end
 end
