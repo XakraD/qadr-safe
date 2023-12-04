@@ -1,11 +1,11 @@
 function sescal(dict,ses)
     local soundset_ref = dict or "Mud5_Sounds"
     local soundset_name = ses or  "Small_Safe_Unlock"
-    local counter_i = 1
-    while soundset_ref~=0 and not Citizen.InvokeNative(0xD9130842D7226045 ,soundset_ref,0) and counter_i <= 300  do
-        counter_i = counter_i + 1
-        Citizen.Wait(0)
-    end
+    -- local counter_i = 1
+    -- while soundset_ref~=0 and not Citizen.InvokeNative(0xD9130842D7226045 ,soundset_ref,0) and counter_i <= 300  do
+    --     counter_i = counter_i + 1
+    --     Citizen.Wait(0)
+    -- end
     if soundset_ref == 0 or Citizen.InvokeNative(0xD9130842D7226045 ,soundset_ref,0) then
         local ped = PlayerPedId()
         local ped_coords = GetEntityCoords(ped)

@@ -11,6 +11,8 @@ local CancelPrompt, OpenPrompt, RotatePrompt
 local Prompts = GetRandomIntInRange(0, 0xffffff)
 
 Citizen.CreateThread(function()
+	Citizen.InvokeNative(0xD9130842D7226045, 'Mud5_Sounds', 0)
+	
     -- local str = 'Cancel'
     -- CancelPrompt = PromptRegisterBegin()
     -- PromptSetControlAction(CancelPrompt, 0x156F7119)	-- ESC
